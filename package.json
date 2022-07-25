@@ -1,5 +1,5 @@
 {
-  "name": "@cypress/mock-ssr",
+  "name": "@encontext/mock-ssr",
   "version": "0.0.1",
   "description": "Cypress Mock SSR",
   "license": "MIT",
