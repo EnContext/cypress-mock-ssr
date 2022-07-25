@@ -43,6 +43,34 @@ it("validate server rendered content", () => {
 })
 ```
 
+mockSSR uses the [Nock](https://github.com/nock/) library to intercept the request. [By default](https://github.com/nock/nock#read-this---about-interceptors), Nock will only intercept a single call to for a URL before the intercept is discarded. To [persist](https://github.com/nock/nock#persist) the intercept across multiple calls, pass `persist: true` to `mockSSR`:
+
+```js
+it("validate server rendered content", () => {
+  const joke = "Our wedding was so beautiful, even the cake was in tiers."
+  cy.mockSSR({
+    hostname: "https://icanhazdadjoke.com",
+    method: "GET",
+    path: "/",
+    statusCode: 200,
+    body: {
+      id: "NmbFtH69hFd",
+      joke,
+      status: 200,
+    },
+    persist: true,
+  })
+
+  cy.visit("/")
+  cy.contains("[data-cy=post]", joke)
+})
+
+it("renders the same joke over and over", () => {
+  cy.visit("/")
+  cy.contains("[data-cy=post]", joke)
+})
+```
+
 ### clearSSRMocks
 
 > NOTE: `clearSSRMocks` is called in global `beforeEach` and `after` hooks when it is `require`d in `cypress/support/index.js`.

@@ -27,6 +27,26 @@ describe("Cypress Mock SSR Middleware", function () {
       )
       .expect(200, "", done)
   })
+  it("should accept the persist flag", function (done) {
+    request(app)
+      .post("/__cypress_server_mock")
+      .set("Content-Type", "application/json")
+      .send(
+        JSON.stringify({
+          hostname: "https://icanhazdadjoke.com",
+          method: "GET",
+          path: "/",
+          statusCode: 200,
+          persist: true,
+          body: {
+            id: "NmbFtH69hFd",
+            joke: "The Joke",
+            status: 200,
+          },
+        })
+      )
+      .expect(200, "", done)
+  })
 
   it("should clear mocks", function (done) {
     request(app).get("/__cypress_clear_mocks").expect(200, "", done)

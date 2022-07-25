@@ -16,9 +16,10 @@ const cypressMockMiddleware = () => {
       req.on("end", () => {
         const reqBody = JSON.parse(Buffer.concat(chunks).toString())
 
-        const { hostname, method, path, statusCode, body } = reqBody
+        const { hostname, method, path, statusCode, body, persist } = reqBody
         lcMethod = method.toLowerCase()
-        nock(hostname)[lcMethod](path).reply(statusCode, body)
+        const chain = persist ? nock(hostname).persist() : nock(hostname);
+        chain[lcMethod](path).reply(statusCode, body)
       })
       res.statusCode = 200
       res.end()
